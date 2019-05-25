@@ -17,9 +17,8 @@ const rooms = new Rooms();
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-  console.log('User connected');
 
-  socket.on('joinUser', (userName, callback) => {
+  socket.on('joinUser', (userName) => {
     users.addUser(socket.id, userName);
     rooms.addUser(userName, 'Home Chat');
 
@@ -30,8 +29,6 @@ io.on('connection', (socket) => {
     socket.emit('updateUser', users.getUser(socket.id));
     io.emit('updateRooms', rooms.getRooms());
     socket.emit('updateRoom', rooms.getRoom(socket.room));
-
-    callback();
   });
 
   socket.on('joinRoom', (roomName) => {
@@ -49,14 +46,18 @@ io.on('connection', (socket) => {
   });
 
   socket.on('leaveRoom', (roomName) => {
-    socket.leave(roomName);
-
     rooms.removeUser(users.getUser(socket.id).name, roomName);
     users.removeRoom(socket.id, roomName);
     
-    io.emit('updateRooms', rooms.getRooms());
+    socket.leave(roomName);
+    const user = users.getUser(socket.id);
+    socket.room = user.rooms[user.rooms.length - 1];
+
+    socket.emit('updateRoom', rooms.getRoom(socket.room));
     io.emit('updateUsers', users.getUsers());
-  })
+    socket.emit('updateUser', users.getUser(socket.id));
+    io.emit('updateRooms', rooms.getRooms());
+  });
 
   socket.on('clientMessage', (data) => {
     const room = rooms.getRoom(data.roomName);
@@ -76,11 +77,17 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    users.removeUser(socket.id);
-    io.emit('updateUsers', users.getUsers());
+    const user = users.getUser(socket.id);
 
+    user && user.rooms.forEach((room) => {
+      rooms.removeUser(users.getUser(socket.id).name, room);
+    });
+    users.removeUser(socket.id);
+    
     socket.leave(socket.room);
-    console.log('User disconnected');
+
+    io.emit('updateRooms', rooms.getRooms());
+    io.emit('updateUsers', users.getUsers());
   });
 });
 
