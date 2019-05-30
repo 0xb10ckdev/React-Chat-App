@@ -2,21 +2,21 @@
   @media (max-width: $medium) {
     position: fixed;
     left: -300px;
-    z-index: -1000;
+    z-index: -10;
   }
 }
 
 .open {
   position: fixed;
   left: 0;
-  z-index: 1000;
-  box-shadow: 10px 0 10px $shadow;
+  z-index: 10;
+  box-shadow: 7px 0 10px $shadow;
 }
 
 .button-text {
-  padding: 1px 20px 2px 20px;
+  padding: 0 20px 1px 20px;
   color: #fff;
-  font-size: 14px;
+  font: $font-s;
   border: 1px solid #fff;
   border-radius: 3px;
 }

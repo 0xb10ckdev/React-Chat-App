@@ -1,6 +1,6 @@
 .sidebar {
   width: 300px;
-  background: $violet-gradient;
+  background: $violet-transparent;
   -webkit-transition: all .5s ease;
 	-moz-transition: all .5s ease;
 	transition: all .5s ease;
@@ -16,14 +16,12 @@
         max-height: 80px;
         margin: 10px;
         border-radius: 50%;
-        box-shadow: 0 5px 20px $light-shadow;
       }
 
       p {
         margin: 15px;
         color: #fff;
-        font-size: 20px;
-        font-weight: bold;
+        font: $font-l-bold;
       }
 
       .edit {
@@ -40,68 +38,6 @@
 
       button {
         margin: 10px 5px;
-
-        .icon {
-          color: #fff;
-        }
-      }
-    }
-  }
-
-  @mixin panel {
-    display: flex;
-    justify-content: space-between;
-    height: 40px;
-    margin-bottom: 5px;
-    color: #fff;
-    box-shadow: 0 5px 20px $light-shadow;
-    border: 1px solid transparent;
-
-    p {
-      margin: 10px;
-      font-weight: bold;
-    }
-
-    button {
-      .icon {
-        margin: auto 10px;
-        color: #fff;
-      }
-    }
-  }
-
-  @mixin list {
-    height: 250px;
-    overflow: auto;
-
-    .list {
-      display: flex;
-      height: auto;
-      margin: auto 10px;
-      border-bottom: 1px solid $violet-light;
-
-      img {
-        max-height: 40px;
-        margin: 5px;
-        border-radius: 50%;
-      }
-
-      .primary {
-        margin: auto 10px;
-        color: #fff;
-        font-size: 18px;
-        cursor: pointer;
-      }
-
-      .secondary {
-        margin: 5px 10px;
-        color: #fff;
-        font-size: 12px;
-        font-style: italic;
-      }
-
-      button {
-        margin-left: auto;
 
         .icon {
           color: #fff;
