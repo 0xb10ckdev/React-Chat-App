@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { socketEmit } from '../socketEvents';
+import { socketEmit } from '../helpers/socketEvents';
 
 class PasswordModal extends React.Component {
 
@@ -39,7 +39,7 @@ class PasswordModal extends React.Component {
           <h3>Join Room</h3>
           <p className="error">{this.state.error}</p>
           <p>Password</p>
-          <input type="password" name="password" autoFocus />
+          <input type="password" name="password" autoFocus autoComplete="off" />
           <button type="submit" className="button-text">Join</button>
         </form>
       </Modal>

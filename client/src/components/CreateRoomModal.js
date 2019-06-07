@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { socketEmit } from '../socketEvents';
+import { socketEmit } from '../helpers/socketEvents';
 
 class CreateRoomModal extends React.Component {
 
@@ -37,7 +37,7 @@ class CreateRoomModal extends React.Component {
           <h3>Create new room</h3>
           <p className="error">{this.state.error}</p>
           <p>Room name</p>
-          <input type="text" name="roomName" autoFocus />
+          <input type="text" name="roomName" maxLength="20" autoFocus autoComplete="off" />
           <p>Password (optional)</p>
           <input type="password" name="password" />
           <button type="submit" className="button-text">Create</button>

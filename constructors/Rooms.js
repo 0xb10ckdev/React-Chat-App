@@ -30,19 +30,32 @@ class Rooms {
   }
 
   removeRoom(roomName) {
-    this.rooms = this.rooms.filter((room) => room.name !== roomName);
+    this.rooms = this.rooms.filter((room) => {
+      if (roomName !== 'Home Chat') {
+        return room.name !== roomName;
+      } else {
+        return room;
+      }
+    });
   }
 
   addUser(userName, roomName) {
-    this.rooms.find((room) => room.name === roomName).users.push(userName);
+    const room = this.rooms.find((room) => room.name === roomName);
+    
+    if (!room.users.find((user) => user === userName)) {
+      room.users.push(userName);
+    };
   }
 
   removeUser(userName, roomName) {
     const room = this.getRoom(roomName);
-    room.users = room.users.filter((user) => user !== userName);
+    
+    if (room) {
+      room.users = room.users.filter((user) => user !== userName);
 
-    if (!room.users.length) {
-      this.removeRoom(roomName);
+      if (!room.users.length) {
+        this.removeRoom(roomName);
+      }
     }
   }
 

@@ -12,11 +12,20 @@ class Users {
   }
 
   addUser(id, name) {
-    this.users.push({
-      id: id,
-      name: name,
-      rooms: ['Home Chat']
-    });
+    if (this.users.find((user) => user.name === name)) {
+      return 'Username taken';
+    } else {
+      this.users.push({
+        id: id,
+        name: name,
+        avatar: '/img/default_avatar.png',
+        rooms: ['Home Chat']
+      });
+    }
+  }
+
+  updateAvatar(id, avatar) {
+    this.users.find((user) => user.id === id).avatar = `/img/avatars/${avatar}`;
   }
 
   removeUser(id) {
