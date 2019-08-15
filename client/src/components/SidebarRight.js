@@ -1,44 +1,37 @@
 import React from 'react';
 import Close from 'react-icons/lib/md/close';
-import { IncomingMessage } from 'http';
+import { sidebarClose } from '../helpers/sidebarToggle';
 
 const colors = {
   violet: '#746db4',
   light: '#dedef7',
   dark: '#263238',
   pink: '#ff95c7',
-  green: '#92db25'
+  green: '#92db25',
 };
 
 class SidebarRight extends React.Component {
-
-  closeSidebar = () => {
-    const sidebar = document.getElementsByClassName('sidebar-right')[0];
-
-    if (sidebar.className.match(/(?:^|\s)sidebar-right-open(?!\S)/)) {
-      sidebar.classList.remove('sidebar-right-open');
-      sidebar.classList.add('sidebar-right-closed');
-    }
+  static changeTheme(color) {
+    document.getElementById('theme').href = `/dist/${color}.css`;
+    document.getElementById('logo').src = `/img/logos/logo_${color}.jpg`;
   }
 
-  changeTheme = (e) => {
-    const theme = e.target.className;
-
-    document.getElementById('theme').href = `/dist/${theme}.css`;
-  }
-
-  changeBackground = (e) => {
+  static changeBackground(e) {
     const background = e.target.className;
     const chatContent = document.getElementsByClassName('chat-content')[0];
-    
-    chatContent.style.backgroundImage = `url('/img/${background}.png')`;
+
+    chatContent.style.backgroundImage = `url('/img/backgrounds/${background}.png')`;
+  }
+
+  static closeSidebar() {
+    sidebarClose('right');
   }
 
   render() {
     return (
       <div className="sidebar-right sidebar-right-closed">
         <div className="close">
-          <button onClick={this.closeSidebar}>
+          <button onClick={SidebarRight.closeSidebar}>
             <Close className="icon" size="24px" />
           </button>
         </div>
@@ -47,13 +40,11 @@ class SidebarRight extends React.Component {
             <p>Choose Theme</p>
           </div>
           <div className="colors">
-            {Object.keys(colors).map((color) => {
-              return <div 
-                className={color} 
-                style={{'background': colors[color]}} 
-                onClick={this.changeTheme}>
-              </div>
-            })}
+            {Object.keys(colors).map(color => (<div
+              className={color}
+              style={{ background: colors[color] }}
+              onClick={() => SidebarRight.changeTheme(color)}
+            />))}
           </div>
         </div>
         <div className="backgrounds">
@@ -61,16 +52,16 @@ class SidebarRight extends React.Component {
             <p>Choose Background</p>
           </div>
           <div className="images">
-            <img className="triangles" src={'/img/triangles.png'} onClick={this.changeBackground} />
-            <img className="christmas" src={'/img/christmas.png'} onClick={this.changeBackground} />
-            <img className="sun" src={'/img/sun.png'} onClick={this.changeBackground} />
-            <img className="triangular" src={'/img/triangular.png'} onClick={this.changeBackground} />
-            <img className="triangles_black" src={'/img/triangles_black.png'} onClick={this.changeBackground} />
+            <img className="sun" src="/img/backgrounds/sun.png" alt="sun" onClick={SidebarRight.changeBackground} />
+            <img className="triangular_white" src="/img/backgrounds/triangular_white.png" alt="triangular-white" onClick={SidebarRight.changeBackground} />
+            <img className="triangular_grey" src="/img/backgrounds/triangular_grey.png" alt="triangular-grey" onClick={SidebarRight.changeBackground} />
+            <img className="flowers" src="/img/backgrounds/flowers.png" alt="flowers" onClick={SidebarRight.changeBackground} />
+            <img className="triangular_black" src="/img/backgrounds/triangular_black.png" alt="triangular-black" onClick={SidebarRight.changeBackground} />
           </div>
         </div>
       </div>
-    )
+    );
   }
-};
+}
 
 export default SidebarRight;

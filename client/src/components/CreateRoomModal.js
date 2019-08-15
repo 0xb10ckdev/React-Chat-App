@@ -1,14 +1,20 @@
 import React from 'react';
 import Modal from 'react-modal';
+import PropTypes from 'prop-types';
 import { socketEmit } from '../helpers/socketEvents';
 
 class CreateRoomModal extends React.Component {
+  constructor() {
+    super();
 
-  state = {
-    error: null
+    this.state = {
+      error: null,
+    };
+
+    this.createRoom = this.createRoom.bind(this);
   }
 
-  createRoom = (e) => {
+  createRoom(e) {
     e.preventDefault();
 
     const roomName = e.target.elements.roomName.value.trim();
@@ -43,8 +49,13 @@ class CreateRoomModal extends React.Component {
           <button type="submit" className="button-text">Create</button>
         </form>
       </Modal>
-    )
+    );
   }
 }
+
+CreateRoomModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onRequestClose: PropTypes.func.isRequired,
+};
 
 export default CreateRoomModal;

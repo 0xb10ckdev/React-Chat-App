@@ -11,6 +11,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 const publicPath = path.join(__dirname, 'client', 'public');
+const port = process.env.PORT || 3000;
 
 const users = new Users();
 const rooms = new Rooms();
@@ -23,7 +24,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, new Date().toISOString() + file.originalname);
-  }
+  },
 });
 
 const fileFilter = (req, file, cb) => {
@@ -32,14 +33,14 @@ const fileFilter = (req, file, cb) => {
   } else {
     cb(new Error('Unsupported file format'), false);
   }
-}
+};
 
 const upload = multer({
-  storage: storage,
+  storage,
   limits: {
-    fileSize: 1024 * 1024 * 5
+    fileSize: 1024 * 1024 * 5,
   },
-  fileFilter: fileFilter
+  fileFilter,
 });
 
 app.post('/api/avatar', upload.single('avatar'), (req, res) => {
@@ -49,7 +50,6 @@ app.post('/api/avatar', upload.single('avatar'), (req, res) => {
 });
 
 io.on('connection', (socket) => {
-
   socket.on('joinUser', (userName, callback) => {
     const err = users.addUser(socket.id, userName);
 
@@ -68,9 +68,7 @@ io.on('connection', (socket) => {
     socket.emit('updateRoom', rooms.getRoom(socket.room));
   });
 
-  socket.on('joinRoom', (data, callback) => {
-    const roomName = data.roomName;
-    const password = data.password || null;
+  socket.on('joinRoom', ({ roomName, password = null }, callback) => {
     const room = rooms.getRoom(roomName);
 
     if (room && room.password !== password) {
@@ -95,7 +93,7 @@ io.on('connection', (socket) => {
   socket.on('leaveRoom', (roomName) => {
     rooms.removeUser(users.getUser(socket.id).name, roomName);
     users.removeRoom(socket.id, roomName);
-    
+
     socket.leave(roomName);
     const user = users.getUser(socket.id);
     socket.room = user.rooms[user.rooms.length - 1];
@@ -111,13 +109,13 @@ io.on('connection', (socket) => {
     const message = {
       sender: users.getUser(socket.id),
       text: data.text,
-      time: moment().format('HH:mm')
-    }
+      time: moment().format('HH:mm'),
+    };
 
     if (room.messages.length && message.sender === room.messages[room.messages.length - 1].sender) {
       message.consecutive = true;
     }
-    
+
     rooms.addMessage(message, data.roomName);
 
     io.emit('updateRooms', rooms.getRooms());
@@ -126,18 +124,19 @@ io.on('connection', (socket) => {
   socket.on('getAvatar', () => {
     io.emit('updateUsers', users.getUsers());
     socket.emit('updateUser', users.getUser(socket.id));
-    socket.emit('updateRoom', rooms.getRoom(socket.room));
     io.emit('updateRooms', rooms.getRooms());
-  })
+  });
 
   socket.on('disconnect', () => {
     const user = users.getUser(socket.id);
 
-    user && user.rooms.forEach((room) => {
-      rooms.removeUser(users.getUser(socket.id).name, room);
-    });
+    if (user) {
+      user.rooms.forEach((room) => {
+        rooms.removeUser(users.getUser(socket.id).name, room);
+      });
+    }
     users.removeUser(socket.id);
-    
+
     socket.leave(socket.room);
 
     io.emit('updateRooms', rooms.getRooms());
@@ -149,6 +148,4 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
 });
 
-server.listen(3000, () => {
-  console.log('SERVER NOW RUNNING...');
-});
+server.listen(port);

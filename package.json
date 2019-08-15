@@ -1,13 +1,14 @@
 {
   "name": "chat_app",
   "version": "1.0.0",
-  "description": "",
+  "description": "React + socket.io chat app",
   "main": "server.js",
   "scripts": {
+    "start:dev-full": "concurrently \"nodemon server.js\" \"npm run start:dev --prefix client\"",
     "start": "node server.js",
-    "start:dev-full": "concurrently \"nodemon server.js\" \"npm run start:dev --prefix client\""
+    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
   },
-  "author": "",
+  "author": "Ivan Jakimovski",
   "license": "ISC",
   "dependencies": {
     "concurrently": "^3.5.1",
@@ -15,5 +16,12 @@
     "moment": "^2.22.0",
     "multer": "^1.3.0",
     "socket.io": "^2.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.8.2"
   }
 }

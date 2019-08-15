@@ -1,21 +1,27 @@
 import React from 'react';
 import Modal from 'react-modal';
+import PropTypes from 'prop-types';
 import { socketEmit } from '../helpers/socketEvents';
 
 class PasswordModal extends React.Component {
+  constructor() {
+    super();
 
-  state = {
-    error: null
+    this.state = {
+      error: null,
+    };
+
+    this.submitPassword = this.submitPassword.bind(this);
   }
 
-  submitPassword = (e) => {
+  submitPassword(e) {
     e.preventDefault();
 
     const password = e.target.elements.password.value.trim();
 
     if (!password) {
       return this.setState({ error: 'You must enter password' });
-    };
+    }
 
     socketEmit.joinRoom(this.props.roomName, password, (err) => {
       this.setState({ error: err });
@@ -43,8 +49,18 @@ class PasswordModal extends React.Component {
           <button type="submit" className="button-text">Join</button>
         </form>
       </Modal>
-    )
+    );
   }
 }
+
+PasswordModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onRequestClose: PropTypes.func.isRequired,
+  roomName: PropTypes.string,
+};
+
+PasswordModal.defaultProps = {
+  roomName: '',
+};
 
 export default PasswordModal;

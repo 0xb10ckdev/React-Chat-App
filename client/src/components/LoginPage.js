@@ -2,30 +2,36 @@ import React from 'react';
 import { socketEmit } from '../helpers/socketEvents';
 
 class LoginPage extends React.Component {
+  constructor() {
+    super();
 
-  state = {
-    error: null
+    this.state = {
+      error: null,
+    };
+
+    this.loginUser = this.loginUser.bind(this);
   }
 
-  loginUser = (e) => {
+  loginUser(e) {
     e.preventDefault();
 
     const userName = e.target.elements.userName.value.trim();
 
     if (!userName) {
       return this.setState({ error: 'You must enter username' });
-    };
-    
+    }
+
     socketEmit.joinUser(userName, (err) => {
       this.setState({ error: err });
     });
-    
+
     e.target.elements.userName.value = '';
   }
 
   render() {
     return (
       <div className="login-page">
+        <img className="login-logo" src="/img/logos/logo_login.png" alt="logo" />
         <div className="login-modal">
           <form onSubmit={this.loginUser}>
             <h3>Join Chat</h3>
@@ -36,7 +42,7 @@ class LoginPage extends React.Component {
           </form>
         </div>
       </div>
-    )
+    );
   }
 }
 
