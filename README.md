@@ -1,4 +1,4 @@
-# Chat App
+# React Chat App
 <span><img src="githubImg/a.png" width="280"/>&nbsp;</span>
 <span><img src="githubImg/b.png" width="280"/>&nbsp;</span>
 <span><img src="githubImg/c.png" width="280"/>&nbsp;</span>
@@ -30,4 +30,5 @@ You can see demo <a href="https://ij-chat-app.herokuapp.com/">here</a>.
 
 <i><a href="https://github.com/Reo-Naoki">Reo Naoki</a><br/></i>
 <i>Contact on <a href="https://www.linkedin.com/in/r-naoki">Linkedin</a> for more support<br/></i>
-<i>Email: SenWebDev1009@gmail.com</i>
+<i>Email: SenWebDev1009@gmail.com<br/></i>
+<i>Skype: live:.cid.cfc2a250bd4e3ee5<br/></i>
