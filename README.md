@@ -29,5 +29,5 @@ You can see demo <a href="https://ij-chat-app.herokuapp.com/">here</a>.
 
 
 <i><a href="https://github.com/Reo-Naoki">Reo Naoki</a><br/></i>
-<i>Contact on <a href="https://www.linkedin.com/in/r-naoki">Linkedin</a> for more support</i>
+<i>Contact on <a href="https://www.linkedin.com/in/r-naoki">Linkedin</a> for more support<br/></i>
 <i>Email: SenWebDev1009@gmail.com</i>
